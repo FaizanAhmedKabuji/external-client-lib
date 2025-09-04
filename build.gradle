@@ -1,0 +1,62 @@
+plugins {
+	id 'java-library'
+	id 'org.springframework.boot' version '3.5.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'maven-publish'
+}
+
+// Configure as library, not application
+jar {
+	enabled = true
+	archiveClassifier = '' // Remove classifier for main jar
+}
+
+// Disable bootJar for library
+bootJar {
+	enabled = false
+}
+
+group = 'com.alifa'
+version = '0.0.1-SNAPSHOT'
+description = 'external client'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// Publishing configuration for library distribution
+publishing {
+	publications {
+		maven(MavenPublication) {
+			from components.java
+			groupId = 'com.alifa'
+			artifactId = 'external-client-lib'
+			version = '0.0.1-SNAPSHOT'
+		}
+	}
+}
