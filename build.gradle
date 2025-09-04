@@ -52,38 +52,8 @@ tasks.named('test') {
 // Publishing configuration for library distribution
 publishing {
 	publications {
-		maven(MavenPublication) {
+		mavenJava(MavenPublication) {
 			from components.java
-			groupId = 'com.alifa'
-			artifactId = 'external-client-lib'
-			version = '0.0.1'
-			
-			pom {
-				name = 'External Client Library'
-				description = 'A Java library for making external HTTP requests with Spring WebFlux'
-				url = 'https://github.com/FaizanAhmedKabuji/external-client-lib'
-				
-				licenses {
-					license {
-						name = 'MIT License'
-						url = 'https://opensource.org/licenses/MIT'
-					}
-				}
-				
-				developers {
-					developer {
-						id = 'FaizanAhmedKabuji'
-						name = 'Faizan Ahmed Kabuji'
-						email = 'faizanahmedkabuji@gmail.com'
-					}
-				}
-				
-				scm {
-					connection = 'scm:git:git://github.com/FaizanAhmedKabuji/external-client-lib.git'
-					developerConnection = 'scm:git:ssh://github.com:FaizanAhmedKabuji/external-client-lib.git'
-					url = 'https://github.com/FaizanAhmedKabuji/external-client-lib'
-				}
-			}
 		}
 	}
 	repositories {
@@ -91,11 +61,8 @@ publishing {
 			name = "GitHubPackages"
 			url = uri("https://maven.pkg.github.com/FaizanAhmedKabuji/external-client-lib")
 			credentials {
-				username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-				password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
-			}
-			authentication {
-				basic(BasicAuthentication)
+				username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+				password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
 			}
 		}
 	}
